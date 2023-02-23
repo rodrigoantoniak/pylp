@@ -1,0 +1,134 @@
+#+TITLE: ByeBye
+#+PROPERTY: header-args :tangle Main.hs
+#+STARTUP: showeverything
+#+AUTHOR: Derek Taylor
+
+* Table of Contents :toc:
+- [[#imports][Imports]]
+- [[#start-of-main-block][Start of Main Block]]
+- [[#assigning-some-variables][Assigning some variables]]
+- [[#creating-window][Creating window]]
+- [[#creating-grid][Creating grid]]
+- [[#creating-buttons-with-images][Creating buttons with images]]
+- [[#the-end-of-the-main][The End of the Main]]
+
+* Imports
+
+#+begin_src haskell
+{-# LANGUAGE OverloadedLabels  #-}
+{-# LANGUAGE OverloadedStrings #-}
+module Main where
+
+import Data.GI.Base
+import Data.Char (toUpper, toLower)
+import qualified Data.Text as T (pack, unpack)
+import qualified GI.Gtk as Gtk
+import System.Directory (getHomeDirectory)
+import System.Posix.User (getEffectiveUserName)
+import System.Process
+
+capitalized :: [Char] -> [Char]
+capitalized [] = []
+capitalized (x:xs) = toUpper x : map toLower xs
+
+#+end_src
+
+* Start of Main Block
+This is the start of the main function.
+
+#+begin_src haskell
+main :: IO ()
+main = do
+  Gtk.init Nothing
+
+#+end_src
+
+* Assigning some variables
+#+begin_src haskell
+  home <- getHomeDirectory
+  user <- getEffectiveUserName
+
+#+end_src
+
+* Creating window
+#+begin_src haskell
+  win <- Gtk.windowNew Gtk.WindowTypeToplevel
+  set win
+    [ #borderWidth          := 10
+    , #title                := "Byebye"
+    , #defaultWidth         := 750
+    , #defaultHeight        := 225
+    , #resizable            := False
+    , #windowPosition       := Gtk.WindowPositionCenter
+    , #decorated            := False
+    ]
+
+  Gtk.onWidgetDestroy win Gtk.mainQuit
+
+#+end_src
+
+* Creating grid
+#+begin_src haskell
+  grid <- Gtk.gridNew
+  set grid
+    [ #columnSpacing        := 10
+    , #rowSpacing           := 10
+    , #columnHomogeneous    := True
+    ]
+
+  #add win grid
+#+end_src
+
+* Creating buttons with images
+
+#+begin_src haskell
+  let prefix  = "/nc/gitlab-repos/src/byebye/img/"
+      suffix  = ".png"
+      choices = [ ("cancel",    Gtk.widgetDestroy win)
+                , ("logout",    callCommand "killall xmonad-x86_64-linux")
+                , ("reboot",    callCommand "reboot")
+                , ("shutdown",  callCommand "shutdown -h now")
+                , ("suspend",   callCommand "systemctl suspend")
+                , ("hibernate", callCommand "systemctl hibernate")
+                , ("lock",      callCommand "slock")
+                ]
+
+  let buttonWithImageAndLabel :: [(String, IO ())] -> IO ()
+      buttonWithImageAndLabel [] = return ()
+      buttonWithImageAndLabel (x:xs) = do
+        -- create Gtk image
+        image <- Gtk.imageNewFromFile $ home ++ prefix ++ (fst x) ++ suffix
+        -- create Gtk label
+        label <- Gtk.labelNew Nothing
+        set label
+          [ #label     := T.pack $ "<b>" ++ (capitalized $ fst x) ++ "</b>"
+          , #useMarkup := True
+          ]
+        -- create Gtk button
+        button <- Gtk.buttonNew
+        set button
+          [ #relief  := Gtk.ReliefStyleNone
+          , #image   := image
+          , #hexpand := False
+          ]
+        -- What happens when 'button' is clicked
+        on button #clicked $ do
+          snd x
+        -- Attach 'button' to grid depends on length of xs
+        let a = (length choices) - 1
+            b = length xs
+            col = fromIntegral $ a - b
+        #attach grid button col 0 1 1
+        #attach grid label  col 1 1 1
+        -- Recursion happens by calling the function on 'xs'
+        buttonWithImageAndLabel xs
+
+  buttonWithImageAndLabel choices
+
+#+end_src
+
+* The End of the Main
+#+begin_src haskell
+  #showAll win
+  Gtk.main
+#+end_src
