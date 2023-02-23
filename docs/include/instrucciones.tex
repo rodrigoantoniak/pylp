@@ -1,0 +1,141 @@
+\normalsize{ \indent
+Para instalar todos los componentes necesarios en
+Ubuntu 22.04 LTS, se siguieron los siguientes pasos:
+}
+\begin{itemize}
+	\item sudo apt install xmonad libghc-extra-dev
+	\textbackslash \\ libghc-xmonad-contrib-dev
+	libghc-xmonad-wallpaper-dev \textbackslash \\
+	xmobar compton curl rofi scrot stterm git
+	gnome-screensaver \textbackslash \\ g++ gcc
+	libc6-dev libffi-dev libgmp-dev make	xz-utils
+	\textbackslash \\ zlib1g-dev gnupg netbase \\
+	Donde:
+	\begin{itemize}
+		\item xmonad es el ejecutable del gestor
+		de ventanas.
+		\item libghc-extra-dev provee librerías
+		extras para \acrshort{ghc}, necesarias
+		en el archivo xmonad.hs modificado.
+		\item libghc-xmonad-contrib-dev es la
+		librería de XMonad Contrib.
+		\item libghc-xmonad-wallpaper-dev provee
+		la función de seleccionar aleatoriamente
+		el fondo de pantalla desde xmonad.hs.
+		\item xmobar es el ejecutable de la barra
+		de estado.
+		\item compton es el \gls{comp}.
+		\item curl servirá para una instrucción
+		posterior.
+		\item rofi es el lanzador de aplicaciones.
+		\item scrot es una herramienta para
+		capturar pantallas.
+		\item stterm es una terminal minimalista
+		que servirá para su ejecución en casos
+		distintos a la principal (Termonad).
+		\item git servirá para clonar el
+		repositorio de una aplicación
+		\item gnome-screensaver sirve para
+		bloquear la pantalla en un entorno con
+		\acrshort{gdm}.
+		\item El resto de los paquetes
+		corresponde a las dependencias dentro de
+		un comando a realizar posteriormente.
+	\end{itemize}
+	\item curl -sSL https://get.haskellstack.org/
+	| sh
+	\item sudo apt install gobject-introspection
+	libgirepository1.0-dev \textbackslash \\
+	libgtk-3-dev libvte-2.91-dev libpcre2-dev \\
+	Donde todos los paquetes son dependencias
+	para poder construir Termonad.
+	\item cd directorio/a/gusto
+	\item git clone
+	\url{https://github.com/cdepillabout/termonad}
+	\item cd termonad/
+	\item stack build
+	\item stack run
+\end{itemize}
+\ \newline
+\normalsize{ \indent
+Posteriormente, para poder configurar de forma
+correcta; es necesario recompilar todos los
+archivos de Haskell, donde:
+}
+\begin{itemize}
+	\item XMonad se compila con el comando
+	``xmonad -{}-recompile'' y se reinicia con
+	``xmonad -{}-restart''. Esta última acción
+	afecta a XMobar, por lo que no se necesita
+	más acciones para la barra de estado.
+	\item Termonad se configura realizando
+	``stack exec -{}-package termonad -{}-package
+	colour -{}- termonad'' desde $\sim$/.local/bin.
+	Adicionalmente, se copia el archivo
+	$\sim$/.cache/termonad/termonad-linux-x86\textunderscore
+	64 dentro del directorio /usr/local/bin
+	(puede ser cualquier otro directorio
+	dentro del PATH, lo único que se busca
+	es evitar añadir el directorio origen
+	del archivo)
+\end{itemize}
+\ \newline
+\normalsize{ \indent
+Para el caso de Rofi, no habrá necesiad de
+ninguna compilación; con actualizar el
+archivo $\sim$/.config/rofi/config.rasi es
+suficiente, ya que el programa lee esta
+configuración cada vez que se ejecuta.
+}
+\newline
+\normalsize{ \indent
+Por siguiente, para la aplicación que permite
+hacer acciones sobre la sesión actual; se
+clona desde el repositorio de Distrotube
+\url{https://gitlab.com/dwt1/byebye}, así
+se cambia lo necesario y se obtiene el
+ejecutable. Dentro de lo modificado, se
+encuentra la traducción de las opciones
+en español y la adaptación de algunos
+comandos para que funcionen en la máquina
+virtual.
+}
+\newline
+\normalsize{ \indent
+Para construir la aplicación, se utiliza
+``stack build'' desde el directorio en donde
+se clonó el repositorio; para obtener el
+ejecutable en \\
+.stack-work/install/unicaCarpetaAqui/hash/version/bin/byebye-exe,
+que se copia dentro de /usr/local/bin por
+las mismas razones que Termonad.
+}
+\newline
+\normalsize{ \indent
+Adicionalmente, se ha ajustado la salida
+de audio controlada por defecto desde
+alsamixer; para ello, se ha seguido los
+siguientes pasos:
+}
+\begin{itemize}
+	\item Listar las fuentes de sonido
+	con ``pactl list short sources''.
+	\item Seleccionar la fuente de sonido
+	correcta con ``pactl set-default-source
+	nombreFuenteSonido''.
+	\item Listar los disipadores de sonido
+	con ``pactl list short sinks''.
+	\item Seleccionar el disipador de sonido
+	correcta con ``pactl set-default-sink
+	nombreDisipadorSonido''.
+\end{itemize}
+\ \newline
+\normalsize{ \indent
+Con todos estos pasos realizados, se
+consigue el entorno de escritorio deseado
+en Ubuntu con XMonad. Para obtener las
+configuraciones de cada programa y la
+aplicación personalizada, se puede acceder
+al siguiente repositorio:
+\url{https://github.com/rodrigoantoniak/pylp}
+}

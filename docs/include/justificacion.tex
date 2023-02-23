@@ -1,0 +1,105 @@
+\normalsize{ \indent
+En la actualidad, todas las computadoras personales utilizan
+una interfaz gráfica para interactuar con el usuario. Más
+allá del sistema operativo que se utilice, el entorno visual
+que se utilice en el espacio personal es esencial; tomando en
+cuenta la facilidad de uso, comodidad y personalización, entre
+otros aspectos.
+}
+\newline
+\normalsize{ \indent
+Dependiendo de la arquitectura del sistema operativo, podrán
+existir distintas opciones para los entornos de escritorio de
+la computadora personal. En el caso de Windows \cite{dwm_exe},
+el motor gráfico está definido a nivel del kernel (como se
+muestra en
+\url{https://learn.microsoft.com/es-ar/windows-hardware/drivers/display/images/dpy1.png} y
+\url{https://en.wikipedia.org/wiki/Architecture_of_Windows_NT#/media/File:Windows_2000_architecture.svg});
+esto limita a que deba utilizarse el entorno gráfico que define
+Microsoft para su sistema operativo. En cambio, los sistemas
+operativos basados en UNIX \cite{x_wayland} pueden elegir su
+propio entorno de escritorio (por lo tanto, su gestor de
+ventanas) porque su arquitectura en capas lo permite.
+}
+\newline
+\normalsize{ \indent
+A continuación, se mostrará cómo se gestiona el entorno gráfico
+en un sistema operativo Linux para computadoras personales (se
+aclara esto porque los servidores no cuentan normalmente con
+ninguna interfaz gráfica por defecto):
+}
+\newline
+\begin{tikzpicture}[
+  cuadro/.style={rectangle, draw=black!50, fill=white!3,
+  very thick, minimum size=3mm},
+]
+  \node[cuadro] (usuario) {Usuario};
+  \node[cuadro] (gui) [below=of usuario] {\Gls{de}};
+  \node[cuadro] (ventanas) [below=of gui] {\Gls{wm}};
+  \node[cuadro] (servidor) [below=of ventanas] {\Gls{serv}};
+  \node[cuadro] (compositor) [right=of servidor] {\Gls{comp}};
+  \node[cuadro] (kernel) [below=of servidor] {Núcleo};
+  \node[cuadro] (hw) [below=of kernel] {Hardware};
+  \draw[>=triangle 45, <->] (usuario.south) -- (gui.north);
+  \draw[>=triangle 45, <->] (gui.south) -- (ventanas.north);
+  \draw[>=triangle 45, <->] (ventanas.south) -- (servidor.north);
+  \draw[>=triangle 45, <->] (servidor.south) -- (kernel.north);
+  \draw[>=triangle 45, <->] (kernel.south) -- (hw.north);
+  \draw[>=triangle 45, <->] (servidor.east) -- (compositor.west);
+\end{tikzpicture}
+\newline
+\normalsize{ \indent
+Un ejemplo de entorno gráfico completo para el esquema
+anteriormente mostrado es el siguiente:
+}
+\begin{itemize}
+  \setlength\itemsep{1pt}
+  \item \Gls{serv}: X.Org.
+  \item \Gls{comp}: picom.
+  \item \Gls{wm}: xfwm4.
+  \item \Gls{de}: \acrshort{xfce}.
+\end{itemize}
+\ \newline
+\normalsize{ \indent
+En la actualidad, existe una gran cantidad de entornos
+de escritorio para \acrshort{gnu}/Linux; desde
+\acrshort{gnome} y \acrshort{kde}, hasta \acrshort{xfce},
+\acrshort{lxqt} y otros. Cada uno de ellos se caracteriza
+por su aspecto, conjunto de herramientas y gestor de
+ventanas; además de características comparables entre sí,
+como el consumo eléctrico y de memoria.
+}
+\newline
+\normalsize{ \indent
+Más allá de los pros y contras que posee cada uno de
+los anteriormente citados, todos comparten la propiedad
+de ser muy conducidos al uso del ratón o pad táctil. Sin
+embargo, el usuario puede decidir por interactuar
+directamente con el gestor de ventanas; en consecuencia,
+la cantidad de capas que interviene en la interacción
+humano-computadora es menor y se favorece al menor
+consumo de recursos.
+}
+\newline
+\normalsize{ \indent
+Además, debe considerarse la salud de las manos con el
+uso del ratón \cite{desorden_extremidades}; donde existen
+estudios que demuestran los efectos negativos del mouse
+promedio \cite{dermatosis}. A pesar de la existencia de
+ratones ergonómicos \cite{hipotermia_munieca}, estos
+últimos son personales; cada uno se adapta a un tamaño
+particular de mano, incluyendo el hecho de haber varias
+formas ergonómicas y un costo económico elevado.
+}
+\newline
+\normalsize{ \indent
+Por lo tanto, se puede concretar que la utilización
+de un gestor de ventanas en mosaico es factible por
+varias razones; algunas de las cuales son el consumo
+de recursos y la disminución del uso del mouse, entre
+otros (ciertas motivaciones son más enfocadas para
+desarrolladores, como la programación y la
+personalización; mientras que otras pueden observarse
+como subjetivas, evitándose incluirse para mantener
+la objetividad de la justificación).
+}

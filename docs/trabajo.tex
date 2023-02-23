@@ -1,0 +1,72 @@
+\documentclass[12pt,a4paper]{book}
+\special{papersize=210mm,297mm}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{csquotes}
+\usepackage{graphicx}
+\usepackage[hidelinks]{hyperref}
+\usepackage[acronym]{glossaries}
+\usepackage[style=ieee, backend=bibtex,
+natbib=true, language=spanish]{biblatex}
+\usepackage{sectsty}
+\usepackage{tikz}
+\usetikzlibrary{babel}
+\usetikzlibrary{positioning}
+\usetikzlibrary{arrows, arrows.meta}
+\allsectionsfont{\raggedright}
+\urlstyle{same}
+\renewbibmacro{in:}{}
+\DeclareFieldFormat*{title}{"#1"}
+\DeclareFieldFormat*{citetitle}{#1}
+\DefineBibliographyStrings{spanish}
+{
+  url = {Dirección},
+  presentedat = {presentado en }
+}
+\addbibresource{biblio.bib}
+\graphicspath{ {./images/} }
+\makenoidxglossaries
+\renewcommand{\glsnamefont}[1]{\makefirstuc{#1}}
+\include{./include/glosario}
+\begin{document}
+	\frontmatter
+	\pagenumbering{gobble}
+	\include{./include/caratula}
+	\cleardoublepage
+	\pagestyle{plain}
+	\pagenumbering{Roman}
+	\setcounter{page}{3}
+	\tableofcontents
+	\listoftables
+	\listoffigures
+	\cleardoublepage
+	\mainmatter
+	\pagestyle{headings}
+	\pagenumbering{arabic}
+	\setcounter{page}{5}
+	\part{Introducción}
+	\include{./include/intro}
+	\part{Desarrollo}
+	\chapter{Justificación}
+	\include{./include/justificacion}
+	\chapter{Objetivos}
+	\include{./include/objetivos}
+	\chapter{Alcance}
+	\include{./include/alcance}
+	\chapter{Recursos}
+	\include{./include/recursos}
+	\chapter{Instrucciones}
+	\include{./include/instrucciones}
+	\chapter{Resultados}
+	\include{./include/resultados}
+	\appendix
+	\chapter[Glosario]{Glosario de Términos}
+	\printnoidxglossary[type=\acronymtype,
+    		title=Abreviaturas y acrónimos,nonumberlist]
+	\printnoidxglossary[title=Definiciones,nonumberlist]
+	\backmatter
+	\chapter[Bibliografía]{Referencias
+		bibliográficas}
+	\printbibliography
+\end{document}
